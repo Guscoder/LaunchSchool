@@ -1,0 +1,95 @@
+For example, write out pseudo-code (both casual and formal) that does the following:
+
+a method that returns the sum of two integers
+
+
+
+Ask for the input of two integers
+save each integer to a variable
+add the two variables together
+save result of addition to a variable
+print result
+
+START
+
+GET integer 1 from user
+SET integer1 = first integer input
+
+GET integer 2 from user
+SET integer2 = second integer input
+
+SET sum = add integer 1 plus integer 2
+
+PRINT sum
+
+END
+
+
+
+a method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+
+START
+
+given array of strings
+
+SET variable = new_array that is all strings concatenated together
+
+GET each string
+separate each string from the array
+
+combine each string into one string via concatentation
+
+PRINT new_array
+
+END
+
+
+
+a method that takes an array of integers, and returns a new array with every other element
+
+START
+
+We have an array of integers
+Separate out every other integer
+Puts separated integers into a new array
+Print results--the new array
+
+
+START
+
+#Given an array of integers called awesome_integers
+
+SET new array called better_integers = blank
+
+GET every other integer from awesome_integers
+
+SAVE into better_integers array
+
+PRINT new array
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
