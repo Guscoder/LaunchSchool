@@ -11,11 +11,15 @@ def prompt(message)
 end
 
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i.to_s == input
 end
 
+# def number?(input) --Would test to see if input was either an integer or a float
+#   integer?(input) || float?(input)
+# end
+
 def operation_to_message(op)
-  case op
+  case op # could also save the return value of the case into a variable and then return that var as the last line in the method
   when '1'
     "Adding"
   when '2'
