@@ -170,6 +170,7 @@ loop do # play again loop
   prompt "Play again?"
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
+
 end
 
 prompt "Thanks for playing Tic Tac Toe! Goodbye."
