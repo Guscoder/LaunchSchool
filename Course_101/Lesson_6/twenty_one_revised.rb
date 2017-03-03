@@ -1,6 +1,7 @@
 require "pry"
 
-CARDS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'].freeze
+CARDS = ['1', '2', '3', '4', '5', '6', '7', '8'] +
+        ['9', '10', 'J', 'Q', 'K', 'A'].freeze
 SUITS = ['H', 'D', 'C', 'S'].freeze
 DECK = []
 
@@ -60,7 +61,8 @@ def busted(card_hand)
 end
 
 def display_hands(player, dealer)
-  prompt("You have: #{display_cards(player)}. The dealer is showing: #{display_cards(dealer)[0, 2]}")
+  prompt("You have: #{display_cards(player)}.
+          The dealer is showing: #{display_cards(dealer)[0, 2]}")
 end
 
 def display_cards(hand)
@@ -71,7 +73,7 @@ def display_cards(hand)
   cards.join(', ')
 end
 
-def player_turn(player_hand, dealer_score)
+def player_turn(player_hand)
   prompt("You have a total of #{hand_total_value(player_hand)}.")
 
   loop do
@@ -79,7 +81,8 @@ def player_turn(player_hand, dealer_score)
     answer = gets.chomp.downcase
     if answer == 'h'
       in_game_deal(player_hand) # deal one card to player
-      prompt("You now have: #{display_cards(player_hand)} for a total of #{hand_total_value(player_hand)}.")
+      prompt("You now have: #{display_cards(player_hand)} for a total
+        of #{hand_total_value(player_hand)}.")
       break if busted(player_hand)
     else
       prompt("Please select h or s.")
@@ -93,8 +96,7 @@ def player_turn(player_hand, dealer_score)
   end
 end
 
-def dealer_turn(dealer_hand, player_score)
-  dealer_total = 0
+def dealer_turn(dealer_hand)
   loop do
     if hand_total_value(dealer_hand) < 17
       in_game_deal(dealer_hand)
@@ -107,17 +109,16 @@ def dealer_turn(dealer_hand, player_score)
 
   if busted(dealer_hand)
     dealer_total = hand_total_value(dealer_hand)
-    prompt("Dealer busted with #{dealer_total}. Congratulations scoundrel, you managed win.")
+    prompt("Dealer busted with #{dealer_total}. Congratulations scoundrel,
+      you managed win.")
   end
 end
 
-def compare_hands(player_total, dealer_total, player_score, dealer_score)
+def compare_hands(player_total, dealer_total)
   prompt("You have: #{player_total}. The dealer has: #{dealer_total}")
   if player_total > dealer_total
-    player_score += 1
     prompt("You win! You beat that feckless, nerf-herding dealer.")
   elsif dealer_total > player_total
-    dealer_score += 1
     prompt("You lost! You are banned to the Imperial kessel mines.")
   else
     prompt("You have tied. How boring.")
@@ -128,10 +129,10 @@ def declare_winner(player_score, dealer_score)
   if player_score == 5
     prompt("You have won 5 games! You win the match you squirmy Ewok!")
   elsif dealer_score == 5
-    prompt("The Imperial Dealer has defeated you with 5 most impressive victories!")
+    prompt("The Imperial Dealer has defeated you with 5 most impressive
+      victories!")
   end
 end
-
 
 player_score = 0
 dealer_score = 0
@@ -139,9 +140,6 @@ dealer_score = 0
 loop do
   players_cards = []
   dealers_cards = []
-
-  player_total = 0
-  dealer_total = 0
 
   prompt("Welcome to the game of Imperial 21.")
   create_deck
@@ -151,23 +149,23 @@ loop do
   display_hands(players_cards, dealers_cards)
 
   loop do
-
-    player_turn(players_cards, dealer_score)
+    player_turn(players_cards)
 
     if hand_total_value(players_cards) > 21
       dealer_score += 1
       break
     end
 
-    dealer_turn(dealers_cards, player_score)
+    dealer_turn(dealers_cards)
 
     if hand_total_value(dealers_cards) > 21
       player_score += 1
       break
     end
 
-    compare_hands(hand_total_value(players_cards), hand_total_value(dealers_cards), player_score, dealer_score)
-    
+    compare_hands(hand_total_value(players_cards),
+                  hand_total_value(dealers_cards))
+
     if hand_total_value(players_cards) < hand_total_value(dealers_cards)
       dealer_score += 1
     elsif hand_total_value(players_cards) > hand_total_value(dealers_cards)
@@ -182,13 +180,12 @@ loop do
     break
   else
 
-  prompt("The score is now Player: #{player_score}, Dealer #{dealer_score}.")
-  prompt("-------------")
-  prompt("Would you like to play again? (y/n)")
-  answer = gets.chomp.downcase
-  break if answer == "n"
-end
-
+    prompt("The score is now Player: #{player_score}, Dealer #{dealer_score}.")
+    prompt("-------------")
+    prompt("Would you like to play again? (y/n)")
+    answer = gets.chomp.downcase
+    break if answer == "n"
+  end
 end
 
 prompt("Thanks for playing, Rebel scum.")
