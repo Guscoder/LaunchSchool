@@ -38,16 +38,10 @@ end
 def hand_total_value(card_hand)
   total = 0
   card_hand.each do |card|
-    if card[1] == "J"
-      total += 10
-    elsif card[1] == "Q"
-      total += 10
-    elsif card[1] == "K"
-      total += 10
-    elsif card[1] == "A"
-      total += 11
-    else
-      total += card[1].to_i
+    case card[1]
+    when "J", "Q", "K" then total += 10
+    when "A" then total += 11
+    else total += card[1].to_i
     end
   end
   card_hand.select { |card| card[1] == "A" }.count.times do
@@ -73,22 +67,34 @@ def display_cards(hand)
   cards.join(', ')
 end
 
-def player_turn(player_hand)
+def hand_details(player_hand)
   prompt("You have a total of #{hand_total_value(player_hand)}.")
+end
 
-  loop do
-    prompt("Hit (h) or Stay (s)?")
-    answer = gets.chomp.downcase
-    if answer == 'h'
-      in_game_deal(player_hand) # deal one card to player
-      prompt("You now have: #{display_cards(player_hand)} for a total
-        of #{hand_total_value(player_hand)}.")
-      break if busted(player_hand)
-    else
-      prompt("Please select h or s.")
-    end
-    break if answer == 's' || busted(player_hand)
+def player_hit_or_stay
+  prompt("Hit (h) or Stay (s)?")
+  answer = gets.chomp.downcase
+  if answer == 'h'
+    'hit'
+  elsif answer == 's'
+    'stay'
   end
+end
+
+def player_hit(player_hand)
+  in_game_deal(player_hand) # deal one card to player
+  prompt("You now have: #{display_cards(player_hand)} for a total
+        of #{hand_total_value(player_hand)}.")
+end
+
+def dealer_hit(dealer_hand)
+  in_game_deal(dealer_hand) # deal one card to player
+  prompt("Dealer now has: #{display_cards(dealer_hand)} for a total
+        of #{hand_total_value(dealer_hand)}.")
+end
+
+
+def show_results(player_hand)
   if busted(player_hand)
     prompt("You lost, Loser. You're no Jedi!")
   else
@@ -96,14 +102,27 @@ def player_turn(player_hand)
   end
 end
 
+def player_turn(player_hand)
+  loop do
+    hand_details(player_hand)
+    case player_hit_or_stay
+    when 'hit' then player_hit(player_hand)
+    when 'stay' then break  
+    end
+    break if busted(player_hand)
+  end
+  show_results(player_hand)
+end
+
 def dealer_turn(dealer_hand)
   loop do
     if hand_total_value(dealer_hand) < 17
-      in_game_deal(dealer_hand)
+      prompt("Dealer hits.")
+      dealer_hit(dealer_hand)
       break if busted(dealer_hand)
     elsif hand_total_value(dealer_hand) >= 17
       prompt("Dealer stays.")
-      break
+      break      
     end
   end
 
